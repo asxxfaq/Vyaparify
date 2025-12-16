@@ -1,0 +1,205 @@
+.dashboard {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 24px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* ===============================
+   STAT CARDS (with icons)
+=============================== */
+.stat-card {
+  display: flex;
+  align-items: center;
+  padding: 22px 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-icon {
+  font-size: 2rem;
+  margin-right: 15px;
+  color: #4a90e2;
+}
+
+.card-content h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.card-content p {
+  margin: 5px 0 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111;
+}
+
+/* ===============================
+   REGULAR CARD (without icons)
+=============================== */
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 22px 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card p {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===============================
+   Table styles
+=============================== */
+.table-card {
+  padding: 20px;
+}
+
+.recent-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.recent-table th,
+.recent-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  font-size: 14px;
+}
+
+.recent-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #444;
+}
+
+.recent-table td {
+  color: #555;
+}
+
+.return-row {
+  background: #fff5f5;
+  color: #c62828;
+}
+
+.table-card p {
+  margin: 20px 0 0;
+  color: #777;
+  text-align: center;
+}
+
+/* ===============================
+   Responsive
+=============================== */
+@media (max-width: 900px) {
+  .recent-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 16px;
+  }
+
+  .dashboard h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-card .card-content p {
+    font-size: 1.1rem;
+  }
+
+  .recent-table th,
+  .recent-table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 12px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .stat-card {
+    padding: 18px 16px;
+  }
+
+  .stat-card .card-content h4 {
+    font-size: 0.95rem;
+  }
+
+  .stat-card .card-content p {
+    font-size: 1rem;
+  }
+
+  .recent-table {
+    font-size: 12px;
+  }
+}

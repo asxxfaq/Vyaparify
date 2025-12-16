@@ -1,0 +1,226 @@
+.bill-history {
+  padding: 24px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.bill-history h2 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1f2937;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.history-table thead {
+  background: #f9fafb;
+}
+
+.history-table th {
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+.bill-products-row td {
+  background: #fafafa;
+  padding: 10px;
+}
+
+.inner-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+/* ===== RETURNED BILL ===== */
+.returned-bill-row {
+  background: #fff5f5;
+}
+
+.return-badge {
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c62828;
+  background: #fdeaea;
+  border-radius: 6px;
+}
+
+/* ===== RETURNED PRODUCTS ===== */
+.returned-product-row {
+  background-color: #fff8f8;
+  color: #c62828;
+}
+
+.returned-text {
+  font-size: 12px;
+  color: #c62828;
+  font-weight: 600;
+}
+
+/* ===== INNER TABLE ===== */
+.inner-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.inner-table th,
+.inner-table td {
+  padding: 10px;
+  border-bottom: 1px dashed #e5e7eb;
+  font-size: 13px;
+}
+
+.inner-table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+.inner-table th,
+.inner-table td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: left;
+}
+
+.inner-table th {
+  background: #f0f0f0;
+}
+
+.history-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.history-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.bill-history p {
+  color: #6b7280;
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+.history-table td:last-child {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn.small {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn.warning {
+  background: #facc15;
+  color: #1f2937;
+}
+.btn.warning:hover {
+  background: #eab308;
+}
+
+.btn.danger {
+  background: #ef4444;
+  color: #fff;
+}
+.btn.danger:hover {
+  background: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .bill-history {
+    padding: 16px;
+  }
+
+  .history-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .history-table th,
+  .history-table td {
+    padding: 12px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 480px) {
+  .history-table,
+  .history-table thead,
+  .history-table tbody,
+  .history-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .history-table thead {
+    display: none;
+  }
+
+  .history-table tr {
+    background: #fff;
+    padding: 14px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .history-table td {
+    display: block; /* Make each cell a block to center text */
+    text-align: center; /* Center text */
+    border: none;
+    padding: 8px 0;
+    font-size: 14px;
+    position: relative; /* For label positioning */
+  }
+
+  .history-table td::before {
+    content: attr(data-label);
+    display: block; /* Show label above the value */
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 4px; /* Space between label and value */
+    text-align: center; /* Center label */
+  }
+
+  .history-table td:last-child {
+    margin-top: 10px;
+    justify-content: center;
+  }
+}
+
+
+@media print {
+  .history-table {
+    box-shadow: none;
+  }
+
+  .history-table tr {
+    box-shadow: none;
+  }
+
+  .btn {
+    display: none;
+  }
+}
+
