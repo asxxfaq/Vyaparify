@@ -60,13 +60,13 @@ export default function Products() {
       gst: Number(form.gst)
     };
 
-    /* ❌ PREVENT DUPLICATE CODES */
+    
     const duplicate = products.find(
       p => p.productCode === payload.productCode && p.id !== form.id
     );
 
     if (duplicate) {
-      alert("❌ Product code already exists!");
+      alert(" Product code already exists!");
       return;
     }
 
