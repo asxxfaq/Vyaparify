@@ -88,7 +88,34 @@
       font-size: 13px;
       color: #444;
     }
-
+    .input-error {
+      border: 1px solid #d32f2f;
+    }
+    
+    .error-text {
+      color: #d32f2f;
+      font-size: 11px;
+      margin-top: 2px;
+      display: block;
+    }
+    
+    .row-error {
+      background: #fff5f5;
+    }
+    
+    .muted-text {
+      font-size: 11px;
+      color: #777;
+    }
+    
+    .product-thumb {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+    
     .items-table select,
     .items-table input {
       width: 60%;

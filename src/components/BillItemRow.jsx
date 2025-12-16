@@ -2,7 +2,6 @@ import { MdDelete } from "react-icons/md";
 
 export default function BillItemRow({
   item,
-  index,
   onChange,
   onRemove,
   productOptions,
@@ -12,27 +11,39 @@ export default function BillItemRow({
     p => p.id === item.productId
   );
 
+  /* ---------- PRODUCT CHANGE ---------- */
   const handleProductChange = (e) => {
     const productId = e.target.value;
     const product = productOptions.find(p => p.id === productId);
 
     if (!product) {
-      onChange({ ...item, productId: "", productCode: "" });
+      onChange({
+        ...item,
+        productId: "",
+        productCode: "",
+        name: "",
+        price: 0,
+        gst: 0
+      });
       return;
     }
 
     onChange({
       ...item,
       productId: product.id,
-      productCode: product.productCode, // ✅ ADD CODE
+      productCode: product.productCode,
       name: product.name,
-      price: product.price,
-      gst: product.gst || 0
+      price: Number(product.price),
+      gst: Number(product.gst || 0)
     });
   };
 
+  /* ---------- INPUT HELPERS ---------- */
+  const numberValue = (val, fallback = 0) =>
+    isNaN(val) ? fallback : Number(val);
+
   return (
-    <tr>
+    <tr className={error[`product-${item.tempId}`] ? "row-error" : ""}>
       {/* PRODUCT */}
       <td>
         <div className="product-select">
@@ -44,7 +55,11 @@ export default function BillItemRow({
             />
           )}
 
-          <select value={item.productId} onChange={handleProductChange}>
+          <select
+            value={item.productId}
+            onChange={handleProductChange}
+            className={error[`product-${item.tempId}`] ? "input-error" : ""}
+          >
             <option value="">Select product</option>
             {productOptions.map(p => (
               <option key={p.id} value={p.id}>
@@ -54,15 +69,16 @@ export default function BillItemRow({
           </select>
         </div>
 
-        {/* PRODUCT CODE DISPLAY */}
         {item.productCode && (
           <small className="muted-text">
             Code: {item.productCode}
           </small>
         )}
 
-        {error[`product-${index}`] && (
-          <p className="error-text">{error[`product-${index}`]}</p>
+        {error[`product-${item.tempId}`] && (
+          <small className="error-text">
+            {error[`product-${item.tempId}`]}
+          </small>
         )}
       </td>
 
@@ -73,11 +89,17 @@ export default function BillItemRow({
           min="1"
           value={item.qty}
           onChange={e =>
-            onChange({ ...item, qty: Number(e.target.value) })
+            onChange({
+              ...item,
+              qty: Math.max(1, numberValue(e.target.value, 1))
+            })
           }
+          className={error[`qty-${item.tempId}`] ? "input-error" : ""}
         />
-        {error[`qty-${index}`] && (
-          <p className="error-text">{error[`qty-${index}`]}</p>
+        {error[`qty-${item.tempId}`] && (
+          <small className="error-text">
+            {error[`qty-${item.tempId}`]}
+          </small>
         )}
       </td>
 
@@ -85,13 +107,21 @@ export default function BillItemRow({
       <td>
         <input
           type="number"
+          min="0"
+          step="0.01"
           value={item.price}
           onChange={e =>
-            onChange({ ...item, price: Number(e.target.value) })
+            onChange({
+              ...item,
+              price: Math.max(0, numberValue(e.target.value))
+            })
           }
+          className={error[`price-${item.tempId}`] ? "input-error" : ""}
         />
-        {error[`price-${index}`] && (
-          <p className="error-text">{error[`price-${index}`]}</p>
+        {error[`price-${item.tempId}`] && (
+          <small className="error-text">
+            {error[`price-${item.tempId}`]}
+          </small>
         )}
       </td>
 
@@ -99,9 +129,14 @@ export default function BillItemRow({
       <td>
         <input
           type="number"
+          min="0"
+          step="0.01"
           value={item.discount}
           onChange={e =>
-            onChange({ ...item, discount: Number(e.target.value) })
+            onChange({
+              ...item,
+              discount: Math.max(0, numberValue(e.target.value))
+            })
           }
         />
       </td>
@@ -110,19 +145,34 @@ export default function BillItemRow({
       <td>
         <input
           type="number"
+          min="0"
+          max="28"
           value={item.gst}
           onChange={e =>
-            onChange({ ...item, gst: Number(e.target.value) })
+            onChange({
+              ...item,
+              gst: Math.min(
+                28,
+                Math.max(0, numberValue(e.target.value))
+              )
+            })
           }
+          className={error[`gst-${item.tempId}`] ? "input-error" : ""}
         />
-        {error[`gst-${index}`] && (
-          <p className="error-text">{error[`gst-${index}`]}</p>
+        {error[`gst-${item.tempId}`] && (
+          <small className="error-text">
+            {error[`gst-${item.tempId}`]}
+          </small>
         )}
       </td>
 
       {/* DELETE */}
       <td>
-        <button className="icon-btn" onClick={() => onRemove(item.tempId)}>
+        <button
+          type="button"
+          className="icon-btn"
+          onClick={() => onRemove(item.tempId)}
+        >
           <MdDelete />
         </button>
       </td>

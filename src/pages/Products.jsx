@@ -15,6 +15,7 @@ export default function Products() {
     image: ""
   });
 
+  const [errors, setErrors] = useState({});
   const [scanOpen, setScanOpen] = useState(false);
 
   /* ==============================
@@ -40,11 +41,43 @@ export default function Products() {
     const file = e.target.files[0];
     if (!file) return;
 
+    if (!file.type.startsWith("image/")) {
+      setErrors(prev => ({ ...prev, image: "Only image files allowed" }));
+      return;
+    }
+
     const reader = new FileReader();
     reader.onloadend = () => {
       setForm(prev => ({ ...prev, image: reader.result }));
+      setErrors(prev => ({ ...prev, image: null }));
     };
     reader.readAsDataURL(file);
+  };
+
+  /* ==============================
+     FORM VALIDATION
+  ============================== */
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (form.productCode && !/^[A-Z0-9\-]{3,20}$/.test(form.productCode)) {
+      newErrors.productCode = "Invalid product code format";
+    }
+
+    if (!/^[a-zA-Z0-9\s\-]{3,50}$/.test(form.name)) {
+      newErrors.name = "Product name must be at least 3 characters";
+    }
+
+    if (!/^\d+(\.\d{1,2})?$/.test(form.price)) {
+      newErrors.price = "Enter valid price (up to 2 decimals)";
+    }
+
+    if (!/^(0|[1-9]\d?|100)$/.test(form.gst)) {
+      newErrors.gst = "GST must be between 0 and 100";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   /* ==============================
@@ -52,6 +85,7 @@ export default function Products() {
   ============================== */
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
 
     const payload = {
       ...form,
@@ -60,21 +94,16 @@ export default function Products() {
       gst: Number(form.gst)
     };
 
-    
     const duplicate = products.find(
       p => p.productCode === payload.productCode && p.id !== form.id
     );
 
     if (duplicate) {
-      alert(" Product code already exists!");
+      alert("Product code already exists!");
       return;
     }
 
-    if (form.id) {
-      updateProduct(payload);
-    } else {
-      addProduct(payload);
-    }
+    form.id ? updateProduct(payload) : addProduct(payload);
 
     setForm({
       id: null,
@@ -84,9 +113,13 @@ export default function Products() {
       gst: 0,
       image: ""
     });
+    setErrors({});
   };
 
-  const editProduct = (p) => setForm(p);
+  const editProduct = (p) => {
+    setForm(p);
+    setErrors({});
+  };
 
   return (
     <div>
@@ -100,6 +133,7 @@ export default function Products() {
           placeholder="Auto-generated"
           readOnly={!form.id}
         />
+        {errors.productCode && <small className="error">{errors.productCode}</small>}
 
         <button
           type="button"
@@ -131,16 +165,16 @@ export default function Products() {
         <input
           value={form.name}
           onChange={e => setForm({ ...form, name: e.target.value })}
-          required
         />
+        {errors.name && <small className="error">{errors.name}</small>}
 
         <label>Price</label>
         <input
           type="number"
           value={form.price}
           onChange={e => setForm({ ...form, price: e.target.value })}
-          required
         />
+        {errors.price && <small className="error">{errors.price}</small>}
 
         <label>GST %</label>
         <input
@@ -148,9 +182,11 @@ export default function Products() {
           value={form.gst}
           onChange={e => setForm({ ...form, gst: e.target.value })}
         />
+        {errors.gst && <small className="error">{errors.gst}</small>}
 
         <label>Product Image</label>
         <input type="file" accept="image/*" onChange={handleImageUpload} />
+        {errors.image && <small className="error">{errors.image}</small>}
 
         {form.image && (
           <img
@@ -198,10 +234,7 @@ export default function Products() {
                 <td>₹{p.price}</td>
                 <td>{p.gst}%</td>
                 <td>
-                  <button
-                    className="btn small"
-                    onClick={() => editProduct(p)}
-                  >
+                  <button className="btn small" onClick={() => editProduct(p)}>
                     Edit
                   </button>
                   <button

@@ -1,3 +1,5 @@
+
+
 .bill-history {
   padding: 24px;
   max-width: 1200px;
@@ -7,8 +9,8 @@
 .bill-history h2 {
   font-size: 26px;
   font-weight: 600;
-  margin-bottom: 20px;
-  color: #1f2937;
+ margin-top: 20px !important;
+  color: #000000;
 }
 
 .history-table {
