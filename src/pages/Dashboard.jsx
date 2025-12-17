@@ -92,18 +92,37 @@ export default function Dashboard() {
   //  PAYMENT SPLIT
   const paymentSplit = useMemo(() => {
     const map = { CASH: 0, BANK: 0 };
+  
     monthBills.forEach(b => {
       if (!b.payment) return;
-      const { method, cash = 0, bank = 0 } = b.payment;
-      if (method === "CASH") map.CASH += cash;
-      else if (method === "BANK") map.BANK += bank;
-      else if (method === "SPLIT") {
-        map.CASH += cash;
-        map.BANK += bank;
+  
+      const sign = b.type === "RETURN" ? -1 : 1;
+      const total = b.summary?.total || 0;
+  
+      const method = b.payment.method;
+      const cash = Number(b.payment.cash || 0);
+      const bank = Number(b.payment.bank || 0);
+  
+      // ✅ SPLIT payment
+      if (method === "SPLIT") {
+        map.CASH += sign * cash;
+        map.BANK += sign * bank;
+      }
+      // ✅ CASH only (amount is TOTAL)
+      else if (method === "CASH") {
+        map.CASH += sign * total;
+      }
+      // ✅ BANK only (amount is TOTAL)
+      else if (method === "BANK") {
+        map.BANK += sign * total;
       }
     });
+  
     return map;
   }, [monthBills]);
+  
+  
+  
 
   const mostReturnedProduct = useMemo(() => {
     const map = {};

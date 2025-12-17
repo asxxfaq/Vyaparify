@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
+import logo from '../assets/vyaparify.png'
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -16,9 +17,12 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="nav-left">
-        <h1 className="brand">Vyaparify</h1>
-      </div>
+     <div className="nav-left">
+  <h1 className="brand">
+    <img src={logo} alt="Vyaparify Logo" className="logo" />
+  </h1>
+</div>
+
 
       {/* Hamburger */}
       <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
