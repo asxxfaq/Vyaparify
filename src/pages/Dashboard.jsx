@@ -89,11 +89,18 @@ export default function Dashboard() {
       .slice(0, 5);
   }, [monthBills]);
 
+  //  PAYMENT SPLIT
   const paymentSplit = useMemo(() => {
-    const map = {};
+    const map = { CASH: 0, BANK: 0 };
     monthBills.forEach(b => {
-      const m = b.paymentMode || "CASH";
-      map[m] = (map[m] || 0) + b.summary.total;
+      if (!b.payment) return;
+      const { method, cash = 0, bank = 0 } = b.payment;
+      if (method === "CASH") map.CASH += cash;
+      else if (method === "BANK") map.BANK += bank;
+      else if (method === "SPLIT") {
+        map.CASH += cash;
+        map.BANK += bank;
+      }
     });
     return map;
   }, [monthBills]);
@@ -134,23 +141,45 @@ export default function Dashboard() {
         <Card icon={<FiTrendingUp />} title="Today Returns" value={`₹${todayTotals.returns.toFixed(2)}`} />
         <Card icon={<FiBarChart2 />} title="Net Today" value={`₹${netToday.toFixed(2)}`} />
         <Card icon={<FiDollarSign />} title="Month Net Sales" value={`₹${netMonth.toFixed(2)}`} />
-        <Card icon={<FiClock />} title="Avg Bill" value={`₹${avgBill.toFixed(2)}`} />
         <Card icon={<FiAlertCircle />} title="Return Rate" value={`${returnRate}%`} />
         <Card icon={<FiClock />} title="Peak Hour" value={peakHour ? `${peakHour}:00` : "-"} />
-        <Card icon={<FiShoppingCart />} title="Profit (Est)" value={`₹${profit.toFixed(2)}`} />
+        <Card icon={<FiDollarSign />} title="Cash Collected" value={`₹${paymentSplit.CASH.toFixed(2)}`} />
+        <Card icon={<FiCreditCard />} title="Bank Collected" value={`₹${paymentSplit.BANK.toFixed(2)}`} />
       </div>
 
-      <section className="card">
-        <h3>Top Products</h3>
-        {topProducts.map(([code, p]) => (
-          <p key={code}>
-            {code} — {p.name} ({p.qty} sold)
-          </p>
-        ))}
-      </section>
+      
+<section className="card">
+  <h3>Top Products (Month)</h3>
+  {topProducts.length ? (
+    topProducts.map(([code, p]) => (
+      <p key={code}>
+        <strong>{p.name}</strong> — {p.qty} sold 
+      </p>
+    ))
+  ) : (
+    <p>No sales data</p>
+  )}
+</section>
+
+
+<section className="card">
+  <h3>Most Returned Product</h3>
+  {mostReturnedProduct ? (
+    <p>
+      <strong>{products.find(p => p.id === mostReturnedProduct)?.name || mostReturnedProduct}</strong> —{" "}
+      {bills
+        .filter(b => b.type === "RETURN")
+        .flatMap(b => b.items)
+        .filter(i => i.productId === mostReturnedProduct)
+        .reduce((sum, i) => sum + i.qty, 0)} returned
+    </p>
+  ) : (
+    <p>None</p>
+  )}
+</section>
 
       <section className="card">
-        <h3>Payment Modes</h3>
+        <h3>Payment Modes (Month)</h3>
         {Object.entries(paymentSplit).map(([m, v]) => (
           <p key={m}>
             {m}: ₹{v.toFixed(2)}
