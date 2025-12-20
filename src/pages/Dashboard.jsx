@@ -89,7 +89,7 @@ export default function Dashboard() {
       .slice(0, 5);
   }, [monthBills]);
 
-  //  PAYMENT SPLIT
+  //  PAYMENT SPLIT 
   const paymentSplit = useMemo(() => {
     const map = { CASH: 0, BANK: 0 };
   
@@ -103,16 +103,13 @@ export default function Dashboard() {
       const cash = Number(b.payment.cash || 0);
       const bank = Number(b.payment.bank || 0);
   
-      // ✅ SPLIT payment
       if (method === "SPLIT") {
         map.CASH += sign * cash;
         map.BANK += sign * bank;
       }
-      // ✅ CASH only (amount is TOTAL)
       else if (method === "CASH") {
         map.CASH += sign * total;
       }
-      // ✅ BANK only (amount is TOTAL)
       else if (method === "BANK") {
         map.BANK += sign * total;
       }
