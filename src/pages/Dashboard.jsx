@@ -5,10 +5,8 @@ import {
   FiTrendingUp, 
   FiBarChart2, 
   FiClock, 
-  FiPackage, 
   FiCreditCard, 
   FiAlertCircle, 
-  FiShoppingCart 
 } from "react-icons/fi";
 import "./Dashboard.css";
 
